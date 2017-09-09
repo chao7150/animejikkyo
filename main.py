@@ -18,9 +18,13 @@ class Jikkyo:
         for s in samples:
             for t in s.entities["hashtags"]:
                 tags.append(t["text"])
+        if len(tags) == 0:
+            print("no jikkyo")
+            return
         counter = Counter(tags)
         self.commonTag = counter.most_common(1)[0]
         if self.commonTag[1] < 3:
+            print("few jikkyo")
             return
         else:
             self.getTweets(self.commonTag[0])
@@ -42,6 +46,7 @@ class Jikkyo:
             text = text + w[0]
         text = text + " #" + self.commonTag[0]
         self.api.update_status(text)
+        print("tweeted")
 
     def gaussInt(self):
         seed = random.gauss(2, 1)
