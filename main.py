@@ -44,7 +44,7 @@ class Jikkyo:
         wordNum = self.gaussInt()
         random.shuffle(words)
         text = ""
-        for w in words[:wordNum - 1]:
+        for w in words[:wordNum]:
             text = text + w[0]
         text = text + " #" + self.commonTag[0]
         print(text)
