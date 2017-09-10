@@ -34,6 +34,7 @@ class Jikkyo:
         jikkyos = self.api.search(searchTag + " -RT -@", count = 10)
         dic = {}
         for j in jikkyos:
+            print(j.text)
             dic = self.merge_dict_add_values(dic, feature.get(self.filter(j.text), profile.YAHOO_APPID))
         counter = Counter(dic)
         self.postTweet(counter.most_common(5))
