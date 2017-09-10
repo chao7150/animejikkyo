@@ -37,6 +37,7 @@ class Jikkyo:
             print(j.text)
             dic = self.merge_dict_add_values(dic, feature.get(self.filter(j.text), profile.YAHOO_APPID))
         counter = Counter(dic)
+        print(counter)
         self.postTweet(counter.most_common(5))
 
     def postTweet(self, words):
