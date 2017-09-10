@@ -4,6 +4,7 @@ import feature
 import re
 from collections import Counter
 import random
+import datetime
 
 class Jikkyo:
 
@@ -11,6 +12,7 @@ class Jikkyo:
         self.auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
         self.auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
         self.api = tweepy.API(self.auth)
+        self.api.update_status(datetime.datetime.today())
 
     def getHashtag(self):
         samples = self.api.home_timeline(count = 10)
