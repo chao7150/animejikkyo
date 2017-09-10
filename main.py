@@ -46,11 +46,12 @@ class Jikkyo:
         for w in words[:wordNum - 1]:
             text = text + w[0]
         text = text + " #" + self.commonTag[0]
+        print(text)
         self.api.update_status(text)
         print("tweeted")
 
     def gaussInt(self):
-        seed = random.gauss(2, 1)
+        seed = random.gauss(2, 1.5)
         if seed < 0.5:
             wordNum = 1
         elif seed > 5.5:
