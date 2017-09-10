@@ -52,7 +52,7 @@ class Jikkyo:
         print("tweeted")
 
     def gaussInt(self):
-        seed = random.gauss(2, 1.5)
+        seed = random.gauss(2, 1)
         if seed < 0.5:
             wordNum = 1
         elif seed > 5.5:
