@@ -12,7 +12,7 @@ class Jikkyo:
         self.auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
         self.auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
         self.api = tweepy.API(self.auth)
-        self.api.update_status(datetime.datetime.today())
+        #self.api.update_status(datetime.datetime.today())
 
     def getHashtag(self):
         samples = self.api.home_timeline(count = 10)
@@ -21,12 +21,12 @@ class Jikkyo:
             for t in s.entities["hashtags"]:
                 tags.append(t["text"])
         if len(tags) == 0:
-            print("no jikkyo")
+            #print("no jikkyo")
             return
         counter = Counter(tags)
         self.commonTag = counter.most_common(1)[0]
         if self.commonTag[1] < 3:
-            print("few jikkyo")
+            #print("few jikkyo")
             return
         else:
             self.getTweets(self.commonTag[0])
@@ -48,7 +48,7 @@ class Jikkyo:
             text = text + w[0]
         text = text + " #" + self.commonTag[0]
         self.api.update_status(text)
-        print("tweeted")
+        #print("tweeted")
 
     def gaussInt(self):
         seed = random.gauss(2, 1)
