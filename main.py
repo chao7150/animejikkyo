@@ -20,12 +20,11 @@ class Jikkyo:
         for sam in samples:
             for tag in sam.entities["hashtags"]:
                 tags.append(tag["text"])
-        if tags:
+        if not tags:
             return
         counter = Counter(tags)
         self.commontag = counter.most_common(1)[0]
         if self.commontag[1] < 3:
-            print("few jikkyo")
             return
         else:
             self.gettweets(self.commontag[0])
