@@ -1,9 +1,9 @@
 import profile
-import tweepy
-import feature
 import re
 from collections import Counter
 import random
+import feature
+import tweepy
 
 class Jikkyo:
 
@@ -12,65 +12,66 @@ class Jikkyo:
         self.auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
         self.api = tweepy.API(self.auth)
 
-    def getHashtag(self):
-        samples = self.api.home_timeline(count = 10)
+        self.commontag = None
+
+    def gethashtag(self):
+        samples = self.api.home_timeline(count=10)
         tags = []
-        for s in samples:
-            for t in s.entities["hashtags"]:
-                tags.append(t["text"])
-        if len(tags) == 0:
-            print("no jikkyo")
+        for sam in samples:
+            for tag in sam.entities["hashtags"]:
+                tags.append(tag["text"])
+        if tags:
             return
         counter = Counter(tags)
-        self.commonTag = counter.most_common(1)[0]
-        if self.commonTag[1] < 3:
+        self.commontag = counter.most_common(1)[0]
+        if self.commontag[1] < 3:
             print("few jikkyo")
             return
         else:
-            self.getTweets(self.commonTag[0])
-            
-    def getTweets(self, tag):
-        searchTag = '#' + tag
-        jikkyos = self.api.search(searchTag + " -RT -@", count = 10)
+            self.gettweets(self.commontag[0])
+
+    def gettweets(self, tag):
+        searchtag = '#' + tag
+        jikkyos = self.api.search(searchtag + " -RT -@", count=10)
         dic = {}
         for j in jikkyos:
-            print(j.text)
-            dic = self.merge_dict_add_values(dic, feature.get(self.filter(j.text), profile.YAHOO_APPID))
+            tmpdic = feature.get(self.filter(j.text), profile.YAHOO_APPID)
+            dic = self.merge_dict_add_values(dic, tmpdic)
         counter = Counter(dic)
-        print(counter)
-        self.postTweet(counter.most_common(5))
+        self.posttweet(counter.most_common(5))
 
-    def postTweet(self, words):
-        wordNum = self.gaussInt()
+    def posttweet(self, words):
+        wordnum = self.gaussint()
         random.shuffle(words)
         text = ""
-        for w in words[:wordNum]:
-            text = text + w[0]
-        text = text + " #" + self.commonTag[0]
-        print(text)
+        for wrd in words[:wordnum]:
+            text = text + wrd[0]
+        text = text + " #" + self.commontag[0]
         self.api.update_status(text)
-        print("tweeted")
 
-    def gaussInt(self):
+    @staticmethod
+    def gaussint():
         seed = random.gauss(2, 1)
         if seed < 0.5:
-            wordNum = 1
+            wordnum = 1
         elif seed > 5.5:
-            wordNum = 5
+            wordnum = 5
         else:
-            wordNum = round(seed)
-        return wordNum
+            wordnum = round(seed)
+        return wordnum
 
-    def filter(self, text):
+    @staticmethod
+    def filter(text):
         out = text
         for hashtag in re.findall(r'[#＃]([\w一-龠ぁ-んァ-ヴーａ-ｚ]+)', text):
-            r = r'[#＃]%s' % hashtag
-            out = re.sub(r, '', out)
+            reg = r'[#＃]%s' % hashtag
+            out = re.sub(reg, '', out)
         return re.sub(r"(https?|ftp)(:\/\/[-_\.!~*\'()a-zA-Z0-9;\/?:\@&=\+\$,%#]+)", "", out)
 
-    def merge_dict_add_values(self, d1, d2):
-        return dict(Counter(d1) + Counter(d2))
+    @staticmethod
+    def merge_dict_add_values(dic1, dic2):
+        return dict(Counter(dic1) + Counter(dic2))
 
 if __name__ == "__main__":
     jikkyo = Jikkyo()
-    jikkyo.getHashtag()
+    jikkyo.gethashtag()
