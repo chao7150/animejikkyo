@@ -10,3 +10,5 @@ python3.6 + tweepy
 
 ツイッターのAPI keyとyahooデベロッパーネットワークのAPIが必要です。
 取得してprofile.py.sampleを参考にしてprofile.pyを各自作ってください。
+
+https://chao.tokyo/2017/09/12/アニメ実況するツイッターbotを作った（復活させ/
