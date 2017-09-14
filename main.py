@@ -11,6 +11,7 @@ class Jikkyo:
         self.auth = tweepy.OAuthHandler(profile.CONSUMER_KEY, profile.CONSUMER_SECRET)
         self.auth.set_access_token(profile.ACCESS_TOKEN, profile.ACCESS_SECRET)
         self.api = tweepy.API(self.auth)
+        self.screen_name = self.api.me().screen_name
 
         self.commontag = None
 
@@ -18,6 +19,8 @@ class Jikkyo:
         samples = self.api.home_timeline(count=10)
         tags = []
         for sam in samples:
+            if sam.user.screen_name == self.screen_name:
+                continue 
             for tag in sam.entities["hashtags"]:
                 tags.append(tag["text"])
         if not tags:
